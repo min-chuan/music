@@ -7,8 +7,9 @@
       <div
         class="item"
         v-for="value in personalized"
+        @click="selectItem(value.id)"
         :key="value.id">
-        <img :src="value.picUrl"/>
+        <img v-lazy="value.picUrl"/>
         <p>{{value.name}}</p>
       </div>
     </div>
@@ -32,6 +33,11 @@ export default {
       type: String,
       default: '',
       require: true
+    }
+  },
+  methods: {
+    selectItem (id) {
+      this.$emit('select', id)
     }
   }
 }

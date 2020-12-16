@@ -4,8 +4,12 @@
       <h3>最新音乐</h3>
     </div>
     <ul class="song-list">
-      <li v-for="value in songs" :key="value.id" class="item">
-        <img :src="value.picUrl"/>
+      <li
+        v-for="value in songs"
+        :key="value.id"
+        class="item"
+        @click="selectItem(value.id)">
+        <img v-lazy="value.picUrl"/>
         <div>
           <h3>{{value.name}}</h3>
           <p>{{value.song.artists[0].name}}</p>
@@ -22,6 +26,11 @@ export default {
       type: Array,
       default: () => [],
       required: true
+    }
+  },
+  methods: {
+    selectItem (id) {
+      console.log('id', id)
     }
   }
 }
