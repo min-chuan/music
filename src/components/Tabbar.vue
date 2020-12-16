@@ -31,10 +31,12 @@ export default {
   line-height: 84px;
   .item {
     @include font_color();
-    @include font_size($font_medium_s)
+    @include font_size($font_medium_s);
   }
   .router-link-active {
     @include font_active_color();
+    @include border_color();
+    border-bottom: 5px solid;
   }
 }
 </style>
