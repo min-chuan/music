@@ -23,7 +23,16 @@ export default {
       default: () => [],
       required: true
     },
-    title: String
+    title: {
+      type: String,
+      default: '',
+      required: true
+    },
+    type: {
+      type: String,
+      default: '',
+      require: true
+    }
   }
 }
 </script>
