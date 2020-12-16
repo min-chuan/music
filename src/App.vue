@@ -1,12 +1,19 @@
 <template>
-  <div id="app"
-       class="aaa">
+  <div id="app" class="aaa">
+    <Header />
   </div>
 </template>
 <script>
-export default {}
+import Header from '@/components/Header.vue'
+export default {
+  name: 'App',
+  components: {
+    Header
+  }
+}
 </script>
 <style lang="scss">
 #app {
+
 }
 </style>
