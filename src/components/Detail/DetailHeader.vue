@@ -7,7 +7,7 @@
 </template>
 <script>
 export default {
-  name: 'SubHeader',
+  name: 'DetailHeader',
   props: {
     title: {
       type: String,
@@ -41,6 +41,8 @@ export default {
 @import '~@/assets/css/variable.scss';
 .header {
   @include bg_color();
+  position: relative;
+  z-index: 999;
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -54,13 +56,14 @@ export default {
     margin-top: 8px;
   }
   &-left {
-    @include bg_img('../assets/images/back');
+    @include bg_img('~@/assets/images/back');
   }
   &-right {
-    @include bg_img('../assets/images/more');
+    @include bg_img('~@/assets/images/more');
   }
   &-text {
     @include font_size($font_medium);
+    @include no-wrap();
     color: #fff;
     line-height: 100px;
   }

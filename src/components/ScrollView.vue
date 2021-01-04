@@ -1,5 +1,6 @@
 <template>
-  <div class='scroll-view' ref="wrapper">
+  <div class='scroll-view'
+       ref="wrapper">
     <slot></slot>
   </div>
 </template>
@@ -7,17 +8,31 @@
 import IScroll from 'iscroll/build/iscroll-probe'
 export default {
   name: 'ScrollView',
-  mounted () {
+  methods: {
+    // 提供一个监听滚动距离的方法给外界使用
+    scrolling(fn) {
+      this.iscroll.on('scroll', function () {
+        fn(this.y)
+      })
+    },
+    refresh() {
+      setTimeout(() => {
+        this.iscroll.refresh()
+      }, 100)
+    },
+  },
+  mounted() {
     this.iscroll = new IScroll(this.$refs.wrapper, {
       mouseWheel: true,
       scrollbars: false,
+      // 像素级的触发scroll事件
       probeType: 3,
       // 解决拖拽卡顿问题
       scrollX: false,
       scrollY: true,
       disablePointer: false,
       disableTouch: false,
-      disableMouse: true
+      disableMouse: true,
     })
     // // 创建一个观察者对象
     const observer = new MutationObserver((mutationList, observer) => {
@@ -27,11 +42,11 @@ export default {
     const config = {
       childList: true, // 观察目标子节点的变化，添加或者删除
       subtree: true, // 默认为 false，设置为 true 可以观察后代节点
-      attributeFilter: ['height', 'offsetHeight'] // 观察特定属性
+      attributeFilter: ['height', 'offsetHeight'], // 观察特定属性
     }
     // 3.告诉观察者对象, 我们需要观察谁, 需要观察什么内容
     observer.observe(this.$refs.wrapper, config)
-  }
+  },
 }
 </script>
 <style scoped lang='scss'>

@@ -1,25 +1,42 @@
 <template>
   <ul class='detail-bottom'>
-    <li class="bottom-top">
+    <li class="bottom-top"
+        @click="onPlayAll">
       <div class="bottom-icon"></div>
       <div class="bottom-title">播放全部</div>
     </li>
-    <li v-for="value in playlist" :key="value.id" class="item">
-        <h3>{{value.name}}</h3>
-        <p>{{value.al.name}} - {{value.ar[0].name}}</p>
+    <li v-for="value in playlist"
+        :key="value.id"
+        class="item"
+        @click="onSelect(value.id)">
+      <h3>{{value.name}}</h3>
+      <p>{{value.al.name}} - {{value.ar[0].name}}</p>
     </li>
   </ul>
 </template>
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'DetailBottom',
   props: {
     playlist: {
       type: Array,
       default: () => [],
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
+  methods: {
+    ...mapActions(['setFullScreen', 'setSongs', 'setLyric', 'setCurrentIndex']),
+    onSelect(id) {
+      this.setFullScreen(true)
+      this.setSongs([id])
+    },
+    onPlayAll() {
+      const ids = this.playlist.map((item) => item.id)
+      this.setFullScreen(true)
+      this.setSongs(ids)
+    },
+  },
 }
 </script>
 <style scoped lang='scss'>
@@ -27,8 +44,7 @@ export default {
 @import '~@/assets/css/variable.scss';
 .detail-bottom {
   width: 100%;
-  height: 100%;
-  li{
+  li {
     width: 100%;
     height: 120px;
     padding: 20px;
@@ -47,18 +63,18 @@ export default {
       height: 60px;
       margin-right: 20px;
     }
-    .bottom-title{
+    .bottom-title {
       @include font_color();
       @include font_size($font_large);
     }
   }
-  .item{
-    h3{
+  .item {
+    h3 {
       @include font_color();
       @include font_size($font_medium);
       @include no-wrap();
     }
-    p{
+    p {
       @include font_color();
       @include font_size($font_samll);
       @include no-wrap();

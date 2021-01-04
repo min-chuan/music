@@ -3,26 +3,34 @@
     <div class="recommend-wrapper">
       <ScrollView>
         <div>
-          <Banner :banners="banners"/>
-          <Personalized
-            title="推荐歌单"
-            @select="fatherSelectItem"
-            :personalized="personalized"/>
-          <Personalized
-            title="最新专辑"
-            :personalized="albums"/>
-          <SongList :songs="songs"/>
+          <Banner :banners="banners" />
+          <Personalized title="推荐歌单"
+                        type="songs"
+                        @select="fatherSelectItem"
+                        :personalized="personalized" />
+          <Personalized title="最新专辑"
+                        type="albums"
+                        @select="fatherSelectItem"
+                        :personalized="albums" />
+          <SongList :songs="songs" />
         </div>
       </ScrollView>
     </div>
-    <router-view></router-view>
+    <transition name="detail">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 <script>
-import { getBanner, getPersonalized, getNewAlbum, getNewSong } from '@/api/index.js'
-import Banner from '@/components/Banner.vue'
-import Personalized from '@/components/Personalized.vue'
-import SongList from '@/components/SongList.vue'
+import {
+  getBanner,
+  getPersonalized,
+  getNewAlbum,
+  getNewSong,
+} from '@/api/index.js'
+import Banner from '@/components/Recommend/Banner.vue'
+import Personalized from '@/components/Recommend/Personalized.vue'
+import SongList from '@/components/Recommend/SongList.vue'
 import ScrollView from '@/components/ScrollView.vue'
 export default {
   name: 'Recommend',
@@ -30,17 +38,17 @@ export default {
     Banner,
     Personalized,
     SongList,
-    ScrollView
+    ScrollView,
   },
-  data () {
+  data() {
     return {
       banners: [],
       personalized: [],
       albums: [],
-      songs: []
+      songs: [],
     }
   },
-  created () {
+  created() {
     getBanner()
       .then((data) => {
         this.banners = data.banners
@@ -71,12 +79,12 @@ export default {
       })
   },
   methods: {
-    fatherSelectItem (id) {
+    fatherSelectItem(type, id) {
       this.$router.push({
-        path: `/recommend/detail/${id}`
+        path: `/recommend/detail/${type}/${id}`,
       })
-    }
-  }
+    },
+  },
 }
 </script>
 <style scoped lang="scss">
@@ -91,5 +99,13 @@ export default {
     height: 100%;
     overflow: hidden;
   }
+}
+.detail-enter,
+.detail-leave-to {
+  transform: translateX(100%);
+}
+.detail-enter-active,
+.detail-leave-active {
+  transition: all 1s;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class='detail-top'>
+  <div class='detail-top' ref="top">
     <div class="img-container">
       <img :src="path" alt="">
       <div class="mask" ref="mask"></div>
@@ -9,6 +9,14 @@
 <script>
 export default {
   name: 'DetailTop',
+  methods: {
+    changeScale (scale) {
+      this.$refs.top.style.transform = `scale(${scale})`
+    },
+    changeOpacity (opacity) {
+      this.$refs.mask.style.opacity = opacity
+    }
+  },
   props: {
     path: {
       type: String,
