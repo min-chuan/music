@@ -7,5 +7,9 @@ export default {
   model: modelType.loop, // 播放模式
   songs: [],
   currentIndex: 0,
+  currentTime: 0,
+  totalTime: 0,
   lyric: {},
+  favoriteList: [],
+  historyList: [],
 }

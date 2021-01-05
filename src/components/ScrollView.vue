@@ -20,6 +20,9 @@ export default {
         this.iscroll.refresh()
       }, 100)
     },
+    scrollTo(x, y, time) {
+      this.iscroll.scrollTo(x, y, time)
+    },
   },
   mounted() {
     this.iscroll = new IScroll(this.$refs.wrapper, {

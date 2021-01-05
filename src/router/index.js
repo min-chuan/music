@@ -37,9 +37,16 @@ const Detail = (resolve) => {
   })
 }
 
+const Test = (resolve) => {
+  import('@/views/Test').then((module) => {
+    resolve(module)
+  })
+}
+
 Vue.use(VueRouter)
 
 const routes = [
+  { path: '/test', component: Test },
   { path: '/singer', component: Singer },
   { path: '/rank', component: Rank },
   { path: '/search', component: Search },

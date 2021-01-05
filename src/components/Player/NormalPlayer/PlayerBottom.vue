@@ -1,26 +1,30 @@
 <template>
   <div class='player-bottom'>
     <div class="bottom-progress">
-      <span>00:00</span>
-      <div class="progress-bar">
-        <div class="progress-line">
+      <span>{{currentTime | formatTime}}</span>
+      <div class="progress-bar"
+           @click.stop="onSetProgress"
+           ref="progressBar">
+        <div class="progress-line"
+             :style="{width: percentage + '%'}">
           <div class="progress-dot"></div>
         </div>
       </div>
-      <span>00:00</span>
+      <span>{{totalTime | formatTime}}</span>
     </div>
     <div class="bottom-controll">
       <div class="mode loop"
            ref="model"
-           @click="onChangeModel"></div>
+           @click.stop="onChangeModel"></div>
       <div class="prev"
-           @click="onPrev"></div>
+           @click.stop="onPrev"></div>
       <div class="play"
            ref="play"
-           @click="onPlay"></div>
+           @click.stop="onPlay"></div>
       <div class="next"
-           @click="onNext"></div>
-      <div class="favorite"></div>
+           @click.stop="onNext"></div>
+      <div :class="['favorite', {active: isFavorite}]"
+           @click.stop="setFavoriteSong(currentSong)"></div>
     </div>
   </div>
 </template>
@@ -29,10 +33,33 @@ import { mapGetters, mapActions } from 'vuex'
 import modelType from '@/store/model-type'
 export default {
   name: 'PlayerBottom',
+  filters: {
+    formatTime(time) {
+      let minutes = parseInt(time / 60)
+      let seconds = parseInt(time % 60)
+      minutes = minutes < 10 ? '0' + minutes : minutes
+      seconds = seconds < 10 ? '0' + seconds : seconds
+      return minutes + ':' + seconds
+    },
+  },
   methods: {
-    ...mapActions(['setIsPlaying', 'setModel']),
-    onPrev() {},
-    onNext() {},
+    ...mapActions([
+      'setIsPlaying',
+      'setModel',
+      'setCurrentIndex',
+      'setFavoriteSong',
+    ]),
+    onSetProgress(e) {
+      const currentTime =
+        (e.offsetX / this.$refs.progressBar.offsetWidth) * this.totalTime
+      this.$emit('setProgress', currentTime)
+    },
+    onPrev() {
+      this.setCurrentIndex(this.currentIndex - 1)
+    },
+    onNext() {
+      this.setCurrentIndex(this.currentIndex + 1)
+    },
     onChangeModel() {
       if (this.model === modelType.loop) {
         this.setModel(modelType.one)
@@ -51,7 +78,24 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['isPlaying', 'model', 'currentIndex']),
+    ...mapGetters([
+      'isPlaying',
+      'model',
+      'currentIndex',
+      'currentTime',
+      'totalTime',
+      'currentSong',
+      'favoriteList',
+    ]),
+    percentage() {
+      return (this.currentTime / this.totalTime) * 100
+    },
+    isFavorite() {
+      const result = this.favoriteList.find(
+        (item) => item.id === this.currentSong.id
+      )
+      return !!result
+    },
   },
   watch: {
     isPlaying(newVal, oldVal) {
@@ -86,6 +130,7 @@ export default {
   width: 100%;
   @include bg_color();
   .bottom-progress {
+    position: relative;
     width: 80%;
     margin: 0 auto;
     display: flex;
@@ -93,19 +138,19 @@ export default {
     align-items: center;
     height: 84px;
     .progress-bar {
-      position: relative;
       width: 60%;
       height: 10px;
       background-color: #fff;
       border-radius: 10px;
       .progress-line {
-        width: 50%;
+        position: relative;
+        width: 0%;
         height: 100%;
         background-color: #ccc;
         .progress-dot {
           position: absolute;
           top: -50%;
-          left: 50%;
+          left: 100%;
           width: 20px;
           height: 20px;
           border-radius: 50%;

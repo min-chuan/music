@@ -10,11 +10,13 @@
         </div>
         <p>{{firstLyric}}</p>
       </swiper-slide>
-      <swiper-slide class="lyric">
-        <ScrollView>
+      <swiper-slide class="lyric"
+                    ref="lyric">
+        <ScrollView ref="scrollView">
           <ul>
-            <li v-for="(item, index) in lyric"
-                :key="index">{{item}}</li>
+            <li :class="{active: currentLineNum === key}"
+                v-for="(item, key) in lyric"
+                :key="key">{{item}}</li>
           </ul>
         </ScrollView>
       </swiper-slide>
@@ -37,7 +39,7 @@ export default {
     ScrollView,
   },
   computed: {
-    ...mapGetters(['isPlaying', 'currentSong', 'lyric']),
+    ...mapGetters(['isPlaying', 'currentSong', 'lyric', 'currentTime']),
     firstLyric() {
       const keys = Object.keys(this.lyric)
       return this.lyric[keys[0]]
@@ -49,6 +51,44 @@ export default {
         this.$refs.cdImg.classList.add('active')
       } else {
         this.$refs.cdImg.classList.remove('active')
+      }
+    },
+    lyric(newVal, oldVal) {
+      console.log('newVal', newVal)
+      for (const key in newVal) {
+        this.currentLineNum = key
+        return
+      }
+    },
+    currentTime(newVal, oldVal) {
+      // 1.高亮歌词同步
+      const lineNum = Math.floor(newVal)
+      this.currentLineNum = this.getActiveLineNum(lineNum)
+      // 2.歌词滚动同步
+      const currentLyricTop = document.querySelector('.lyric .active').offsetTop
+      const lyricHeight = this.$refs.lyric.$el.offsetHeight
+      if (currentLyricTop > lyricHeight / 2) {
+        this.$refs.scrollView.scrollTo(
+          0,
+          lyricHeight / 2 - currentLyricTop,
+          100
+        )
+      } else {
+        this.$refs.scrollView.scrollTo(0, 0, 100)
+      }
+    },
+  },
+  methods: {
+    getActiveLineNum(lineNum) {
+      if (lineNum < 0) {
+        return this.currentLineNum
+      }
+      const result = this.lyric[lineNum + '']
+      if (result === undefined || result === '') {
+        lineNum--
+        return this.getActiveLineNum(lineNum)
+      } else {
+        return lineNum + ''
       }
     },
   },
@@ -65,6 +105,7 @@ export default {
         observeParents: true,
         observeSlideChildren: true,
       },
+      currentLineNum: '0',
     }
   },
 }
@@ -105,13 +146,15 @@ export default {
     }
     .lyric {
       ul {
+        position: relative;
         text-align: center;
+        padding-bottom: 70%;
         li {
           @include font_size($font_medium);
           @include font_color();
           margin-top: 20px;
-          &:last-child {
-            padding-bottom: 100px;
+          &.active {
+            color: #fff;
           }
         }
       }

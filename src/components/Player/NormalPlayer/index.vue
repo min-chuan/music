@@ -7,7 +7,7 @@
       <div class="player-wrapper">
         <PlayerHeader />
         <PlayerMiddle />
-        <PlayerBottom />
+        <PlayerBottom @setProgress="(val) => $emit('setProgress', val)" />
       </div>
       <div class="player-bg">
         <img :src="currentSong.picUrl" />

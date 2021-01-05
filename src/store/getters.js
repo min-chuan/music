@@ -35,5 +35,17 @@ export default {
   },
   lyric: (state) => {
     return state.lyric
-  }
+  },
+  currentTime: (state) => {
+    return state.currentTime
+  },
+  totalTime: (state) => {
+    return state.totalTime
+  },
+  favoriteList: (state) => {
+    return state.favoriteList
+  },
+  historyList: (state) => {
+    return state.historyList
+  },
 }
