@@ -1,29 +1,34 @@
 <template>
-  <div class="header" @click="themeChange">
+  <div class="header"
+       @click="themeChange">
     <div class="header-left"></div>
     <div class="header-text">知播渔音乐</div>
-    <div class="header-right"></div>
+    <div class="header-right"
+         @click.stop="clickAccount"></div>
   </div>
 </template>
 <script>
 export default {
   name: 'Header',
-  data () {
+  data() {
     return {
       index: 0,
-      themes: ['theme', 'theme1', 'theme2']
+      themes: ['theme', 'theme1', 'theme2'],
     }
   },
   methods: {
-    themeChange () {
+    clickAccount() {
+      this.$router.push('/account')
+    },
+    themeChange() {
       let index = ++this.index
       if (index > 2) {
         index = 0
       }
       this.index = index
       document.documentElement.setAttribute('data-theme', this.themes[index])
-    }
-  }
+    },
+  },
 }
 </script>
 <style scoped lang="scss">

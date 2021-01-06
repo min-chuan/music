@@ -43,6 +43,12 @@ const Test = (resolve) => {
   })
 }
 
+const Account = (resolve) => {
+  import('@/views/Account').then((module) => {
+    resolve(module)
+  })
+}
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -50,6 +56,7 @@ const routes = [
   { path: '/singer', component: Singer },
   { path: '/rank', component: Rank },
   { path: '/search', component: Search },
+  { path: '/account', component: Account },
   {
     path: '/recommend',
     component: Recommend,

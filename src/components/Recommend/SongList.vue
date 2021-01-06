@@ -3,36 +3,21 @@
     <div class="song-top">
       <h3>最新音乐</h3>
     </div>
-    <ul class="song-list">
-      <li v-for="value in songs"
-          :key="value.id"
-          class="item"
-          @click="selectItem(value.id)">
-        <img v-lazy="value.picUrl" />
-        <div>
-          <h3>{{value.name}}</h3>
-          <p>{{value.song.artists[0].name}}</p>
-        </div>
-      </li>
-    </ul>
+    <SongItem :songs="songs" />
   </div>
 </template>
 <script>
-import { mapActions } from 'vuex'
+import SongItem from '@/components/SongItem'
 export default {
   name: 'SongList',
+  components: {
+    SongItem,
+  },
   props: {
     songs: {
       type: Array,
       default: () => [],
       required: true,
-    },
-  },
-  methods: {
-    ...mapActions(['setFullScreen', 'setSongs']),
-    async selectItem(id) {
-      await this.setSongs([id])
-      this.setFullScreen(true)
     },
   },
 }
@@ -53,31 +38,6 @@ export default {
       @include font_size($font_large);
       @include font_color();
       font-weight: bold;
-    }
-  }
-  .song-list {
-    .item {
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-      height: 200px;
-      img {
-        width: 150px;
-        height: 150px;
-        margin-right: 20px;
-        border-radius: 20px;
-      }
-      div {
-        @include font_color();
-        h3 {
-          @include font_size($font_large);
-        }
-        p {
-          @include font_size($font_medium);
-          margin-top: 20px;
-          opacity: 0.6;
-        }
-      }
     }
   }
 }

@@ -91,10 +91,13 @@ export default {
     }
   },
   [SET_HISTORY_SONG](state, song) {
-    if (state.historyList.length === 30) {
-      state.songs.shift()
+    const result = state.historyList.find(item => item.id === song.id)
+    if (result === undefined) {
+      if (state.historyList.length === 30) {
+        state.songs.shift()
+      }
+      state.historyList.push(song)
     }
-    state.historyList.push(song)
   },
   [SET_HISTORY_LIST](state, list) {
     if (list) {

@@ -15,6 +15,11 @@ import MiniPlayer from '@/components/Player/MiniPlayer'
 import ListPlayer from '@/components/Player/ListPlayer'
 import { mapGetters, mapActions } from 'vuex'
 import modelType from '@/store/model-type'
+import {
+  getRandomIntInclusive,
+  getLocalStorage,
+  setLocalStorage,
+} from '@/tools/tools'
 export default {
   name: 'Player',
   methods: {
@@ -26,18 +31,13 @@ export default {
       'setHistorySong',
       'setHistoryList',
     ]),
-    getRandomIntInclusive(min, max) {
-      min = Math.ceil(min)
-      max = Math.floor(max)
-      return Math.floor(Math.random() * (max - min + 1)) + min // 含最大值，含最小值
-    },
     onEnd() {
       if (this.model === modelType.loop) {
         this.setCurrentIndex(this.currentIndex + 1)
       } else if (this.model === modelType.one) {
         this.$refs.audio.play()
       } else {
-        const index = this.getRandomIntInclusive(0, this.songs.length)
+        const index = getRandomIntInclusive(0, this.songs.length)
         this.setCurrentIndex(index)
       }
     },
@@ -102,16 +102,16 @@ export default {
       immediate: true,
     },
     favoriteList(newVal, oldVal) {
-      window.localStorage.setItem('favoriteList', JSON.stringify(newVal))
+      setLocalStorage('favoriteList', newVal)
     },
     historyList(newVal, oldVal) {
-      window.localStorage.setItem('historyList', JSON.stringify(newVal))
+      setLocalStorage('historyList', newVal)
     },
   },
   created() {
-    const favoriteList = JSON.parse(window.localStorage.getItem('favoriteList'))
+    const favoriteList = getLocalStorage('favoriteList')
     this.setFavoriteList(favoriteList)
-    const historyList = JSON.parse(window.localStorage.getItem('historyList'))
+    const historyList = getLocalStorage('historyList')
     this.setHistoryList(historyList)
   },
   components: {

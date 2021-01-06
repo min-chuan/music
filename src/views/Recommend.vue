@@ -16,7 +16,7 @@
         </div>
       </ScrollView>
     </div>
-    <transition name="detail">
+    <transition name="change">
       <router-view></router-view>
     </transition>
   </div>
@@ -72,7 +72,23 @@ export default {
       })
     getNewSong()
       .then((data) => {
-        this.songs = data.result
+        this.songs = data.result.map((item) => {
+          let author = ''
+          for (let i = 0; i < item.song.artists.length; i++) {
+            const artist = item.song.artists[i].name
+            if (i === 0) {
+              author = artist
+            } else {
+              author += '-' + artist
+            }
+          }
+          return {
+            id: item.id,
+            name: item.name,
+            picUrl: item.picUrl,
+            author: author,
+          }
+        })
       })
       .catch(function (err) {
         console.log(err)
@@ -100,12 +116,12 @@ export default {
     overflow: hidden;
   }
 }
-.detail-enter,
-.detail-leave-to {
+.change-enter,
+.change-leave-to {
   transform: translateX(100%);
 }
-.detail-enter-active,
-.detail-leave-active {
+.change-enter-active,
+.change-leave-active {
   transition: all 1s;
 }
 </style>
