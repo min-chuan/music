@@ -1,15 +1,10 @@
 <template>
   <div class="header"
        @click="themeChange">
-    <div class="header-left">
-      <slot name="left"></slot>
-    </div>
-    <div class="header-center">
-      <slot name="center"></slot>
-    </div>
-    <div class="header-right">
-      <slot name="right"></slot>
-    </div>
+    <div class="header-left"></div>
+    <div class="header-text">知播渔音乐</div>
+    <div class="header-right"
+         @click.stop="clickAccount"></div>
   </div>
 </template>
 <script>

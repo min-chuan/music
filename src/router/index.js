@@ -53,8 +53,26 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/test', component: Test },
-  { path: '/singer', component: Singer },
-  { path: '/rank', component: Rank },
+  {
+    path: '/singer',
+    component: Singer,
+    children: [
+      {
+        path: 'detail/:type/:id/',
+        component: Detail
+      }
+    ]
+  },
+  {
+    path: '/rank',
+    component: Rank,
+    children: [
+      {
+        path: 'detail/:type/:id/',
+        component: Detail
+      }
+    ]
+  },
   { path: '/search', component: Search },
   { path: '/account', component: Account },
   {

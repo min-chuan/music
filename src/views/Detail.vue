@@ -1,10 +1,11 @@
 <template>
   <div class='detail'>
-    <DetailHeader :title="playlist.name"/>
-    <DetailTop :path="playlist.coverImgUrl" ref="top"/>
+    <DetailHeader :title="playlist.name" />
+    <DetailTop :path="playlist.coverImgUrl"
+               ref="top" />
     <div class="bottom-wrapper">
       <ScrollView ref="scrollView">
-        <DetailBottom :playlist="playlist.tracks"/>
+        <DetailBottom :playlist="playlist.tracks" />
       </ScrollView>
     </div>
   </div>
@@ -14,29 +15,29 @@ import DetailHeader from '@/components/Detail/DetailHeader'
 import DetailTop from '@/components/Detail/DetailTop'
 import DetailBottom from '@/components/Detail/DetailBottom'
 import ScrollView from '@/components/ScrollView'
-import { getPlayList, getAlbum } from '@/api/index.js'
+import { getPlayList, getAlbum, getSingerSongs } from '@/api/index.js'
 export default {
   name: 'Detail',
   components: {
     DetailHeader,
     DetailTop,
     DetailBottom,
-    ScrollView
+    ScrollView,
   },
-  data () {
+  data() {
     return {
-      playlist: {}
+      playlist: {},
     }
   },
-  created () {
+  created() {
     const { type, id } = this.$route.params
-    if (type === 'songs') {
+    if (type === 'songs' || type === 'rank') {
       getPlayList({ id })
         .then((data) => {
           this.playlist = data.playlist
         })
-        .catch(e => {
-          console.log(e)
+        .catch((err) => {
+          console.log(err)
         })
     } else if (type === 'albums') {
       getAlbum({ id })
@@ -44,15 +45,23 @@ export default {
           this.playlist = {
             name: data.album.name,
             coverImgUrl: data.album.picUrl,
-            tracks: data.songs
+            tracks: data.songs,
           }
         })
         .catch((err) => {
           console.log(err)
         })
+    } else if (type === 'singer') {
+      getSingerSongs({ id }).then((data) => {
+        this.playlist = {
+          name: data.artist.name,
+          coverImgUrl: data.artist.picUrl,
+          tracks: data.hotSongs,
+        }
+      })
     }
   },
-  mounted () {
+  mounted() {
     this.$refs.scrollView.scrolling((offsetY) => {
       const defaultHeight = this.$refs.top.$el.offsetHeight
       if (offsetY < 0) {
@@ -63,7 +72,7 @@ export default {
         this.$refs.top.changeScale(scale)
       }
     })
-  }
+  },
 }
 </script>
 <style scoped lang='scss'>
