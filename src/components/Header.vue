@@ -53,16 +53,16 @@ export default {
     height: 84px;
     margin-top: 8px;
   }
-  &-left {
-    @include bg_img('../assets/images/logo');
-  }
-  &-right {
-    @include bg_img('../assets/images/account');
-  }
-  &-text {
-    @include font_size($font_medium);
-    color: #fff;
-    line-height: 100px;
-  }
+  // &-left {
+  //   @include bg_img('../assets/images/logo');
+  // }
+  // &-right {
+  //   @include bg_img('../assets/images/account');
+  // }
+  // &-text {
+  //   @include font_size($font_medium);
+  //   color: #fff;
+  //   line-height: 100px;
+  // }
 }
 </style>
