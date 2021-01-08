@@ -1,32 +1,27 @@
 <template>
-  <div class="header"
-       @click="themeChange">
-    <div class="header-left"></div>
-    <div class="header-text">知播渔音乐</div>
-    <div class="header-right"
-         @click.stop="clickAccount"></div>
-  </div>
+  <Header>
+    <template v-slot:left>
+      <div class="header-left"></div>
+    </template>
+    <template v-slot:center>
+      <div class="header-text">知播渔音乐</div>
+    </template>
+    <template v-slot:right>
+      <div class="header-right"
+           @click.stop="clickAccount"></div>
+    </template>
+  </Header>
 </template>
 <script>
+import Header from '@/components/Header'
 export default {
-  name: 'Header',
-  data() {
-    return {
-      index: 0,
-      themes: ['theme', 'theme1', 'theme2'],
-    }
+  name: 'MainHeader',
+  components: {
+    Header,
   },
   methods: {
     clickAccount() {
       this.$router.push('/account')
-    },
-    themeChange() {
-      let index = ++this.index
-      if (index > 2) {
-        index = 0
-      }
-      this.index = index
-      document.documentElement.setAttribute('data-theme', this.themes[index])
     },
   },
 }
@@ -34,30 +29,19 @@ export default {
 <style scoped lang="scss">
 @import '~@/assets/css/mixin.scss';
 @import '~@/assets/css/variable.scss';
-.header {
-  @include bg_color();
-  display: flex;
-  justify-content: space-between;
+.header-left {
   width: 100%;
-  height: 100px;
-  padding: 0 10px;
-  box-sizing: border-box;
-  &-left,
-  &-right {
-    width: 84px;
-    height: 84px;
-    margin-top: 8px;
-  }
-  &-left {
-    @include bg_img('../assets/images/logo');
-  }
-  &-right {
-    @include bg_img('../assets/images/account');
-  }
-  &-text {
-    @include font_size($font_medium);
-    color: #fff;
-    line-height: 100px;
-  }
+  height: 100%;
+  @include bg_img('~@/assets/images/logo');
+}
+.header-right {
+  width: 100%;
+  height: 100%;
+  @include bg_img('~@/assets/images/account');
+}
+.header-text {
+  @include font_size($font_medium);
+  color: #fff;
+  line-height: 100px;
 }
 </style>

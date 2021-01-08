@@ -1,13 +1,13 @@
 <template>
   <div class="header"
        @click="themeChange">
-    <div class="header-left">
+    <div class="left">
       <slot name="left"></slot>
     </div>
-    <div class="header-center">
+    <div class="center">
       <slot name="center"></slot>
     </div>
-    <div class="header-right">
+    <div class="right">
       <slot name="right"></slot>
     </div>
   </div>
@@ -22,9 +22,6 @@ export default {
     }
   },
   methods: {
-    clickAccount() {
-      this.$router.push('/account')
-    },
     themeChange() {
       let index = ++this.index
       if (index > 2) {
@@ -47,22 +44,11 @@ export default {
   height: 100px;
   padding: 0 10px;
   box-sizing: border-box;
-  &-left,
-  &-right {
+  .left,
+  .right {
     width: 84px;
     height: 84px;
     margin-top: 8px;
   }
-  // &-left {
-  //   @include bg_img('../assets/images/logo');
-  // }
-  // &-right {
-  //   @include bg_img('../assets/images/account');
-  // }
-  // &-text {
-  //   @include font_size($font_medium);
-  //   color: #fff;
-  //   line-height: 100px;
-  // }
 }
 </style>

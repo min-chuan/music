@@ -1,24 +1,27 @@
 <template>
-  <div id="app" class="aaa">
+  <div id="app"
+       class="aaa">
     <div>
-      <Header />
+      <MainHeader />
       <Tabbar />
-      <router-view />
+      <keep-alive include="Singer,Search">
+        <router-view />
+      </keep-alive>
     </div>
     <Player />
   </div>
 </template>
 <script>
-import Header from '@/components/Header.vue'
+import MainHeader from '@/components/MainHeader.vue'
 import Tabbar from '@/components/Tabbar.vue'
 import Player from '@/views/Player'
 export default {
   name: 'App',
   components: {
-    Header,
+    MainHeader,
     Tabbar,
-    Player
-  }
+    Player,
+  },
 }
 </script>
 <style lang="scss">
